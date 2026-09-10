@@ -1,0 +1,25 @@
+# Environment variables
+.env
+
+# Secret encryption key
+secret.key
+
+# Database
+database/
+
+# Uploaded evidence
+evidence/
+
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

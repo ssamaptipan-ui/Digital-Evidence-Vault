@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify Evidence - Digital Evidence Vault</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        /* ==========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            padding: 25px 18px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+            margin-bottom: 6px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #d1d5db;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu .active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 25px;
+        }
+
+        .logout a {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .logout a:hover {
+            background: #b91c1c;
+        }
+
+
+        /* ==========================
+           MAIN
+        ========================== */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* ==========================
+           VERIFICATION CARD
+        ========================== */
+
+        .verify-card {
+            max-width: 750px;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+            margin-bottom: 25px;
+        }
+
+        .verify-card h2 {
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .verify-card .description {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+
+        /* ==========================
+           FORM
+        ========================== */
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #2563eb;
+        }
+
+        .verify-button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .verify-button:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ==========================
+           RESULT
+        ========================== */
+
+        .result {
+            max-width: 750px;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .success {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+        }
+
+        .warning {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+        }
+
+
+        /* ==========================
+           SECURITY INFO
+        ========================== */
+
+        .info-grid {
+            max-width: 750px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-card h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+
+        /* ==========================
+           FOOTER
+        ========================== */
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+
+        /* ==========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: relative;
+                left: 0;
+                right: 0;
+                bottom: auto;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================
+         SIDEBAR
+    ========================== -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>🔐 Evidence Vault</h2>
+
+            <p>Digital Evidence Management</p>
+
+        </div>
+
+
+        <div class="menu">
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('upload') }}">
+                📤 Upload Evidence
+            </a>
+
+            <a href="{{ url_for('evidence_list') }}">
+                📁 Evidence
+            </a>
+
+            <a href="{{ url_for('verify') }}" class="active">
+                ✅ Verify Evidence
+            </a>
+
+            <a href="{{ url_for('logs') }}">
+                📋 Audit Logs
+            </a>
+
+        </div>
+
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================
+         MAIN CONTENT
+    ========================== -->
+
+    <div class="main">
+
+
+        <div class="header">
+
+            <h1>Evidence Verification</h1>
+
+            <p>
+                Verify the integrity and authenticity of stored digital evidence
+            </p>
+
+        </div>
+
+
+
+        <!-- ==========================
+             RESULT
+        ========================== -->
+
+        {% if result %}
+
+            {% if "Successfully" in result or "OK" in result %}
+
+                <div class="result success">
+
+                    <strong>✓ Verification Successful</strong>
+
+                    <br><br>
+
+                    {{ result }}
+
+                </div>
+
+            {% else %}
+
+                <div class="result warning">
+
+                    <strong>⚠ Verification Warning</strong>
+
+                    <br><br>
+
+                    {{ result }}
+
+                </div>
+
+            {% endif %}
+
+        {% endif %}
+
+
+
+        <!-- ==========================
+             VERIFY FORM
+        ========================== -->
+
+        <div class="verify-card">
+
+            <h2>🔍 Verify Evidence</h2>
+
+            <p class="description">
+
+                Select an evidence file from the vault. The system will decrypt
+                the stored evidence, calculate its current SHA-256 hash, and
+                compare it with the original hash stored in the database.
+
+            </p>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('verify') }}"
+            >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <label for="evidence_id">
+                    Select Evidence
+                </label>
+
+
+                <select
+                    name="evidence_id"
+                    id="evidence_id"
+                    required
+                >
+
+                    <option value="">
+                        -- Select Evidence File --
+                    </option>
+
+
+                    {% for evidence in evidences %}
+
+                    <option value="{{ evidence.id }}">
+
+                        #{{ evidence.id }}
+                        -
+                        {{ evidence.filename }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="verify-button"
+                >
+
+                    ✓ Verify Evidence Integrity
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ==========================
+             SECURITY INFORMATION
+        ========================== -->
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <h3>🔐 SHA-256 Integrity Check</h3>
+
+                <p>
+                    A SHA-256 cryptographic hash is used to create a unique
+                    fingerprint of the evidence file.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🔒 Encrypted Storage</h3>
+
+                <p>
+                    Evidence files are encrypted using Fernet symmetric
+                    encryption before being stored.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>🛡️ Tamper Detection</h3>
+
+                <p>
+                    If the current hash differs from the original hash,
+                    the system detects possible evidence modification.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <h3>📋 Audit Trail</h3>
+
+                <p>
+                    Every successful or failed verification attempt can be
+                    recorded in the audit log.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+
+        <footer>
+
+            Digital Evidence Vault
+            © 2026 |
+            Secure Evidence Management System
+
+        </footer>
+
+
+    </div>
+
+
+</body>
+
+</html>

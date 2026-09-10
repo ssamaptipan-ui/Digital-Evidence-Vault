@@ -1,0 +1,2360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Digital Evidence Vault - Dashboard</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #0f172a;
+            color: white;
+
+            padding: 28px 18px;
+
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.08);
+
+            z-index: 100;
+        }
+
+        .logo {
+            text-align: center;
+
+            padding-bottom: 25px;
+            margin-bottom: 22px;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+
+            margin: 0 auto 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2563eb;
+
+            border-radius: 15px;
+
+            font-size: 27px;
+
+            box-shadow:
+                0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .logo h2 {
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+
+        .logo p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .menu-title {
+            color: #64748b;
+
+            font-size: 10px;
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            margin: 18px 12px 12px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            text-decoration: none;
+
+            color: #cbd5e1;
+
+            padding: 13px 14px;
+
+            margin-bottom: 7px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+
+            transition: 0.25s;
+        }
+
+        .menu a:hover {
+            background: #1e293b;
+            color: white;
+
+            transform: translateX(3px);
+        }
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+
+            box-shadow:
+                0 7px 18px rgba(37, 99, 235, 0.25);
+        }
+
+        .menu-icon {
+            width: 23px;
+
+            text-align: center;
+
+            font-size: 16px;
+        }
+
+        .logout {
+            margin-top: 35px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .logout a {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 12px;
+
+            background: #dc2626;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: 0.25s;
+        }
+
+        .logout a:hover {
+            background: #b91c1c;
+
+            transform: translateY(-2px);
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 250px;
+
+            padding: 30px 35px;
+
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .welcome-title {
+            font-size: 27px;
+
+            color: #0f172a;
+
+            margin-bottom: 7px;
+        }
+
+        .welcome-subtitle {
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        .user-box {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            background: white;
+
+            padding: 10px 15px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(15, 23, 42, 0.06);
+
+            border: 1px solid #eef2f7;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #dbeafe;
+
+            color: #2563eb;
+
+            font-weight: bold;
+
+            font-size: 15px;
+        }
+
+        .user-info small {
+            display: block;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            margin-bottom: 3px;
+        }
+
+        .user-info span {
+            color: #1e293b;
+
+            font-weight: bold;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           SECURITY BANNER
+        ===================================================== */
+
+        .security-banner {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eff6ff,
+                    #f8fbff
+                );
+
+            border: 1px solid #dbeafe;
+
+            border-radius: 14px;
+
+            padding: 18px 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .security-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .security-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #dbeafe;
+
+            border-radius: 11px;
+
+            font-size: 21px;
+        }
+
+        .security-left h3 {
+            font-size: 14px;
+
+            color: #1e3a8a;
+
+            margin-bottom: 4px;
+        }
+
+        .security-left p {
+            font-size: 11px;
+
+            color: #64748b;
+        }
+
+        .security-badge {
+            background: #dcfce7;
+
+            color: #166534;
+
+            padding: 8px 13px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 28px;
+        }
+
+        .card {
+            position: relative;
+
+            background: white;
+
+            padding: 21px;
+
+            border-radius: 14px;
+
+            border: 1px solid #edf1f7;
+
+            box-shadow:
+                0 5px 18px rgba(15, 23, 42, 0.05);
+
+            overflow: hidden;
+
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 25px rgba(15, 23, 42, 0.09);
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 10px;
+
+            margin-bottom: 14px;
+
+            font-size: 19px;
+        }
+
+        .card h3 {
+            font-size: 11px;
+
+            color: #64748b;
+
+            margin-bottom: 7px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.3px;
+        }
+
+        .card .number {
+            font-size: 29px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+        }
+
+        .card p {
+            margin-top: 7px;
+
+            font-size: 10px;
+
+            color: #94a3b8;
+        }
+
+        /* =====================================================
+           SECURITY SCORE
+        ===================================================== */
+
+        .score-card {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+        .score-circle {
+            width: 72px;
+            height: 72px;
+
+            border-radius: 50%;
+
+            background: #2563eb;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+        }
+
+        .score-inner {
+            width: 57px;
+            height: 57px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #1e3a8a;
+        }
+
+        /* =====================================================
+           TWO COLUMN SECTION
+        ===================================================== */
+
+        .dashboard-grid {
+            display: grid;
+
+            grid-template-columns:
+                1.45fr 0.8fr;
+
+            gap: 22px;
+
+            margin-bottom: 28px;
+        }
+
+        .panel {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 21px;
+
+            border: 1px solid #edf1f7;
+
+            box-shadow:
+                0 5px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .section-heading {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 17px;
+        }
+
+        .section-title {
+            font-size: 17px;
+
+            color: #0f172a;
+        }
+
+        .section-subtitle {
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            margin-top: 4px;
+        }
+
+        /* =====================================================
+           VERIFICATION PROGRESS
+        ===================================================== */
+
+        .progress-info {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 9px;
+        }
+
+        .progress-label {
+            font-size: 11px;
+
+            color: #475569;
+        }
+
+        .progress-value {
+            font-size: 12px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+        }
+
+        .progress-bar {
+            width: 100%;
+
+            height: 9px;
+
+            background: #e2e8f0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+
+            width: 0%;
+
+            background: #2563eb;
+
+            border-radius: 20px;
+
+            transition: width 0.5s ease;
+        }
+
+        .verification-summary {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+        }
+
+        .summary-box {
+            padding: 14px;
+
+            background: #f8fafc;
+
+            border-radius: 10px;
+
+            border: 1px solid #eef2f7;
+        }
+
+        .summary-box strong {
+            display: block;
+
+            font-size: 21px;
+
+            color: #0f172a;
+
+            margin-bottom: 3px;
+        }
+
+        .summary-box span {
+            font-size: 10px;
+
+            color: #94a3b8;
+        }
+
+        /* =====================================================
+           SECURITY ALERTS
+        ===================================================== */
+
+        .alert {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            margin-bottom: 10px;
+        }
+
+        .alert:last-child {
+            margin-bottom: 0;
+        }
+
+        .alert.warning {
+            background: #fffbeb;
+
+            border: 1px solid #fde68a;
+        }
+
+        .alert.success {
+            background: #f0fdf4;
+
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert.info {
+            background: #eff6ff;
+
+            border: 1px solid #bfdbfe;
+        }
+
+        .alert-icon {
+            font-size: 18px;
+
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: white;
+        }
+
+        .alert-content h4 {
+            font-size: 11px;
+
+            color: #334155;
+
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            font-size: 9px;
+
+            color: #64748b;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 28px;
+        }
+
+        .action {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            background: white;
+
+            padding: 18px;
+
+            border-radius: 13px;
+
+            text-decoration: none;
+
+            color: #111827;
+
+            border: 1px solid #edf1f7;
+
+            box-shadow:
+                0 4px 14px rgba(15, 23, 42, 0.04);
+
+            transition: 0.25s;
+        }
+
+        .action:hover {
+            transform: translateY(-4px);
+
+            border-color: #bfdbfe;
+
+            box-shadow:
+                0 9px 22px rgba(15, 23, 42, 0.08);
+        }
+
+        .action-icon {
+            width: 44px;
+            height: 44px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 11px;
+
+            font-size: 20px;
+        }
+
+        .action-content {
+            flex: 1;
+        }
+
+        .action h3 {
+            margin-bottom: 5px;
+
+            font-size: 13px;
+
+            color: #1e293b;
+        }
+
+        .action p {
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+        .action-arrow {
+            color: #94a3b8;
+
+            font-size: 17px;
+        }
+
+        /* =====================================================
+           RECENT EVIDENCE
+        ===================================================== */
+
+        .table-container {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            border: 1px solid #edf1f7;
+
+            box-shadow:
+                0 5px 18px rgba(15, 23, 42, 0.05);
+
+            overflow-x: auto;
+
+            margin-bottom: 28px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+
+            padding: 12px;
+
+            background: #f8fafc;
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 12px;
+
+            border-bottom:
+                1px solid #f1f5f9;
+
+            font-size: 11px;
+
+            color: #475569;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .file-name {
+            color: #1e293b;
+
+            font-weight: 600;
+        }
+
+        .file-id {
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: bold;
+        }
+
+        .verified {
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .pending {
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+        .verify-btn {
+            display: inline-block;
+
+            text-decoration: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 7px 12px;
+
+            border-radius: 7px;
+
+            font-size: 9px;
+
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .verify-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* =====================================================
+           RECENT ACTIVITY
+        ===================================================== */
+
+        .activity-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+        .activity-item {
+            display: flex;
+
+            gap: 12px;
+
+            align-items: flex-start;
+
+            padding-bottom: 12px;
+
+            border-bottom:
+                1px solid #f1f5f9;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+
+            padding-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #eff6ff;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-content h4 {
+            font-size: 10px;
+
+            color: #334155;
+
+            margin-bottom: 4px;
+        }
+
+        .activity-content p {
+            font-size: 9px;
+
+            color: #94a3b8;
+
+            line-height: 1.4;
+        }
+
+        .activity-time {
+            font-size: 8px;
+
+            color: #cbd5e1;
+
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           SECURITY FEATURES
+        ===================================================== */
+
+        .security-section {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 21px;
+
+            border: 1px solid #edf1f7;
+
+            box-shadow:
+                0 5px 18px rgba(15, 23, 42, 0.05);
+
+            margin-bottom: 28px;
+        }
+
+        .security-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+
+            margin-top: 18px;
+        }
+
+        .security-item {
+            padding: 15px;
+
+            background: #f8fafc;
+
+            border-radius: 10px;
+
+            border: 1px solid #eef2f7;
+        }
+
+        .security-item-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+        }
+
+        .security-item-icon {
+            font-size: 17px;
+        }
+
+        .check {
+            width: 18px;
+            height: 18px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            border-radius: 50%;
+
+            font-size: 10px;
+
+            font-weight: bold;
+        }
+
+        .security-item h4 {
+            font-size: 11px;
+
+            color: #334155;
+
+            margin-bottom: 4px;
+        }
+
+        .security-item p {
+            font-size: 9px;
+
+            color: #94a3b8;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+            text-align: center;
+
+            padding: 35px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            text-align: center;
+
+            margin-top: 30px;
+
+            padding: 22px;
+
+            color: #94a3b8;
+
+            font-size: 9px;
+
+            border-top:
+                1px solid #e5e7eb;
+        }
+
+        footer strong {
+            color: #64748b;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1150px) {
+
+            .stats {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .security-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                min-height: auto;
+
+                padding: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 22px;
+            }
+
+            .menu {
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+                gap: 5px;
+            }
+
+            .menu-title {
+                grid-column:
+                    1 / -1;
+            }
+
+            .logout {
+                margin-top: 20px;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            .security-banner {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 12px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .security-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .menu {
+                grid-template-columns: 1fr;
+            }
+
+            .main {
+                padding: 17px;
+            }
+
+            .welcome-title {
+                font-size: 23px;
+            }
+
+            .verification-summary {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🔐
+            </div>
+
+            <h2>
+                Evidence Vault
+            </h2>
+
+            <p>
+                Digital Evidence Management
+            </p>
+
+        </div>
+
+        <div class="menu">
+
+            <div class="menu-title">
+                Main Menu
+            </div>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="active">
+
+                <span class="menu-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+            <a href="{{ url_for('upload_evidence') }}">
+
+                <span class="menu-icon">
+                    📤
+                </span>
+
+                <span>
+                    Upload Evidence
+                </span>
+
+            </a>
+
+            <a href="{{ url_for('evidence') }}">
+
+                <span class="menu-icon">
+                    📁
+                </span>
+
+                <span>
+                    Evidence
+                </span>
+
+            </a>
+
+            <a href="{{ url_for('evidence') }}">
+
+                <span class="menu-icon">
+                    ✅
+                </span>
+
+                <span>
+                    Verify Evidence
+                </span>
+
+            </a>
+
+            <a href="{{ url_for('logs') }}">
+
+                <span class="menu-icon">
+                    📋
+                </span>
+
+                <span>
+                    Audit Logs
+                </span>
+
+            </a>
+
+        </div>
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+
+                <span>
+                    🚪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1 class="welcome-title">
+                    Welcome back, {{ session.get('username', 'User') }} 👋
+                </h1>
+
+                <p class="welcome-subtitle">
+                    Here's an overview of your secure digital evidence vault.
+                </p>
+
+            </div>
+
+            <div class="user-box">
+
+                <div class="user-avatar">
+
+                    {{ session.get('username', 'U')[0]|upper }}
+
+                </div>
+
+                <div class="user-info">
+
+                    <small>
+                        Logged in as
+                    </small>
+
+                    <span>
+                        {{ session.get('username', 'User') }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY STATUS -->
+
+        <div class="security-banner">
+
+            <div class="security-left">
+
+                <div class="security-icon">
+                    🛡️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Vault Security Status
+                    </h3>
+
+                    <p>
+                        Encryption, integrity verification and audit monitoring are active.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="security-badge">
+                ● SYSTEM SECURE
+            </div>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+            <!-- TOTAL -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    📁
+                </div>
+
+                <h3>
+                    Total Evidence
+                </h3>
+
+                <div class="number">
+                    {{ total_evidence|default(0) }}
+                </div>
+
+                <p>
+                    Evidence files stored in vault
+                </p>
+
+            </div>
+
+
+            <!-- VERIFIED -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    🛡️
+                </div>
+
+                <h3>
+                    Verified Evidence
+                </h3>
+
+                <div class="number">
+                    {{ verified_evidence|default(0) }}
+                </div>
+
+                <p>
+                    Successfully integrity verified
+                </p>
+
+            </div>
+
+
+            <!-- PENDING -->
+
+            <div class="card">
+
+                <div class="card-icon">
+                    ⏳
+                </div>
+
+                <h3>
+                    Pending Verification
+                </h3>
+
+                <div class="number">
+                    {{ pending_evidence|default(0) }}
+                </div>
+
+                <p>
+                    Evidence awaiting verification
+                </p>
+
+            </div>
+
+
+            <!-- SECURITY SCORE -->
+
+            <div class="card score-card">
+
+                <div>
+
+                    <div class="card-icon">
+                        🔐
+                    </div>
+
+                    <h3>
+                        Security Score
+                    </h3>
+
+                    <p>
+                        Vault protection status
+                    </p>
+
+                </div>
+
+                <div class="score-circle">
+
+                    <div class="score-inner">
+
+                        {{ security_score|default(0) }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- VERIFICATION + ALERTS -->
+
+        <div class="dashboard-grid">
+
+            <!-- VERIFICATION -->
+
+            <div class="panel">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Evidence Integrity
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Current verification status of stored evidence
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="progress-info">
+
+                    <span class="progress-label">
+                        Verification Progress
+                    </span>
+
+                    <span class="progress-value"
+                          id="verificationPercentage">
+
+                        {{ verification_percentage|default(0) }}%
+
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div class="progress-fill"></div>
+
+                </div>
+
+                <div class="verification-summary">
+
+                    <div class="summary-box">
+
+                        <strong>
+                            {{ verified_evidence|default(0) }}
+                        </strong>
+
+                        <span>
+                            Verified Evidence
+                        </span>
+
+                    </div>
+
+                    <div class="summary-box">
+
+                        <strong>
+                            {{ pending_evidence|default(0) }}
+                        </strong>
+
+                        <span>
+                            Pending Evidence
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY ALERTS -->
+
+            <div class="panel">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Security Alerts
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Important vault notifications
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="alert success">
+
+                    <div class="alert-icon">
+                        🛡️
+                    </div>
+
+                    <div class="alert-content">
+
+                        <h4>
+                            Vault Security Active
+                        </h4>
+
+                        <p>
+                            Encryption and SHA-256 integrity protection are enabled.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% if pending_evidence|default(0) > 0 %}
+
+                <div class="alert warning">
+
+                    <div class="alert-icon">
+                        ⚠️
+                    </div>
+
+                    <div class="alert-content">
+
+                        <h4>
+                            Verification Pending
+                        </h4>
+
+                        <p>
+                            Some evidence files are waiting for integrity verification.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <div class="alert info">
+
+                    <div class="alert-icon">
+                        ✓
+                    </div>
+
+                    <div class="alert-content">
+
+                        <h4>
+                            Evidence Integrity
+                        </h4>
+
+                        <p>
+                            There are currently no pending evidence verification tasks.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2 class="section-title">
+                    Quick Actions
+                </h2>
+
+                <p class="section-subtitle">
+                    Manage your evidence securely
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <a href="{{ url_for('upload_evidence') }}"
+               class="action">
+
+                <div class="action-icon">
+                    📤
+                </div>
+
+                <div class="action-content">
+
+                    <h3>
+                        Upload Evidence
+                    </h3>
+
+                    <p>
+                        Upload and securely encrypt a new evidence file.
+                    </p>
+
+                </div>
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+            </a>
+
+
+            <a href="{{ url_for('evidence') }}"
+               class="action">
+
+                <div class="action-icon">
+                    📁
+                </div>
+
+                <div class="action-content">
+
+                    <h3>
+                        View Evidence
+                    </h3>
+
+                    <p>
+                        Browse stored evidence files and manage them.
+                    </p>
+
+                </div>
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+            </a>
+
+
+            <a href="{{ url_for('logs') }}"
+               class="action">
+
+                <div class="action-icon">
+                    📋
+                </div>
+
+                <div class="action-content">
+
+                    <h3>
+                        Audit Logs
+                    </h3>
+
+                    <p>
+                        Review important activity recorded in the audit trail.
+                    </p>
+
+                </div>
+
+                <div class="action-arrow">
+                    →
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- RECENT EVIDENCE -->
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2 class="section-title">
+                    Recent Evidence
+                </h2>
+
+                <p class="section-subtitle">
+                    Latest evidence files stored in the vault
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            {% if recent_evidence|default([]) %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            File Name
+                        </th>
+
+                        <th>
+                            Uploaded By
+                        </th>
+
+                        <th>
+                            Date & Time
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for evidence_item in recent_evidence %}
+
+                    <tr>
+
+                        <td>
+
+                            <span class="file-id">
+                                #{{ evidence_item.id }}
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="file-name">
+                                📄 {{ evidence_item.filename }}
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ evidence_item.uploaded_by }}
+                        </td>
+
+                        <td>
+
+                            {% if evidence_item.upload_time %}
+
+                                {{ evidence_item.upload_time.strftime('%d-%m-%Y %I:%M:%S %p') }}
+
+                            {% else %}
+
+                                -
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if evidence_item.verified %}
+
+                            <span class="status verified">
+                                ✓ Verified
+                            </span>
+
+                            {% else %}
+
+                            <span class="status pending">
+                                ⚠ Pending
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <a href="{{ url_for('evidence_details', evidence_id=evidence_item.id) }}"
+                               class="verify-btn">
+
+                                View Details
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+
+                📁
+
+                <br><br>
+
+                No evidence has been uploaded yet.
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- RECENT ACTIVITY -->
+
+        <div class="dashboard-grid">
+
+            <div class="panel">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Recent Activity
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Latest actions recorded in the audit trail
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity-list">
+
+                    {% if recent_logs|default([]) %}
+
+                        {% for log in recent_logs %}
+
+                        <div class="activity-item">
+
+                            <div class="activity-icon">
+
+                                {% if "Uploaded" in log.action %}
+                                    📤
+                                {% elif "Verified" in log.action %}
+                                    ✅
+                                {% elif "Logged In" in log.action %}
+                                    🔑
+                                {% elif "Logged Out" in log.action %}
+                                    🚪
+                                {% elif "Registered" in log.action %}
+                                    👤
+                                {% elif "Downloaded" in log.action %}
+                                    📥
+                                {% else %}
+                                    📋
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="activity-content">
+
+                                <h4>
+                                    {{ log.action }}
+                                </h4>
+
+                                <p>
+                                    User: {{ log.username }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="activity-time">
+
+                                {% if log.timestamp %}
+
+                                    {{ log.timestamp.strftime('%d-%m-%Y %I:%M:%S %p') }}
+
+                                {% else %}
+
+                                    -
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="empty">
+                            No activity recorded yet.
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- AUDIT SUMMARY -->
+
+            <div class="panel">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Audit Monitoring
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Activity tracking overview
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-box"
+                     style="margin-bottom:12px;">
+
+                    <strong>
+                        {{ total_logs|default(0) }}
+                    </strong>
+
+                    <span>
+                        Total audit events recorded
+                    </span>
+
+                </div>
+
+
+                <div class="summary-box">
+
+                    <strong>
+                        ACTIVE
+                    </strong>
+
+                    <span>
+                        Audit trail monitoring enabled
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY FEATURES -->
+
+        <div class="security-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2 class="section-title">
+                        🔐 Security Features
+                    </h2>
+
+                    <p class="section-subtitle">
+                        Protection mechanisms currently available in the vault
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-grid">
+
+                <!-- ENCRYPTION -->
+
+                <div class="security-item">
+
+                    <div class="security-item-top">
+
+                        <span class="security-item-icon">
+                            🔒
+                        </span>
+
+                        <span class="check">
+                            ✓
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        File Encryption
+                    </h4>
+
+                    <p>
+                        Evidence files are encrypted before storage.
+                    </p>
+
+                </div>
+
+
+                <!-- SHA -->
+
+                <div class="security-item">
+
+                    <div class="security-item-top">
+
+                        <span class="security-item-icon">
+                            #️⃣
+                        </span>
+
+                        <span class="check">
+                            ✓
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        SHA-256 Integrity
+                    </h4>
+
+                    <p>
+                        Evidence integrity can be verified using cryptographic hashing.
+                    </p>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="security-item">
+
+                    <div class="security-item-top">
+
+                        <span class="security-item-icon">
+                            🔑
+                        </span>
+
+                        <span class="check">
+                            ✓
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Password Hashing
+                    </h4>
+
+                    <p>
+                        User passwords are securely hashed before storage.
+                    </p>
+
+                </div>
+
+
+                <!-- AUDIT -->
+
+                <div class="security-item">
+
+                    <div class="security-item-top">
+
+                        <span class="security-item-icon">
+                            📋
+                        </span>
+
+                        <span class="check">
+                            ✓
+                        </span>
+
+                    </div>
+
+                    <h4>
+                        Audit Logging
+                    </h4>
+
+                    <p>
+                        Important system activities are recorded in the audit trail.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <strong>
+                Digital Evidence Vault
+            </strong>
+
+            <br>
+
+            Secure Evidence Management
+            • Encryption
+            • SHA-256
+            • Audit Logging
+
+            <br><br>
+
+            © 2026 Digital Evidence Vault
+
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        const verifiedEvidence =
+            Number("{{ verified_evidence|default(0) }}");
+
+        const totalEvidence =
+            Number("{{ total_evidence|default(0) }}");
+
+        let verificationPercentage = 0;
+
+        if (totalEvidence > 0) {
+
+            verificationPercentage =
+                (verifiedEvidence / totalEvidence) * 100;
+
+        }
+
+        const roundedPercentage =
+            verificationPercentage.toFixed(1);
+
+        const progressFill =
+            document.querySelector(".progress-fill");
+
+        const percentageText =
+            document.getElementById(
+                "verificationPercentage"
+            );
+
+        if (progressFill) {
+
+            progressFill.style.width =
+                verificationPercentage + "%";
+
+        }
+
+        if (percentageText) {
+
+            percentageText.textContent =
+                roundedPercentage + "%";
+
+        }
+
+        const scoreCircle =
+            document.querySelector(".score-circle");
+
+        const scoreInner =
+            document.querySelector(".score-inner");
+
+        let securityScore =
+            Number("{{ security_score|default(0) }}");
+
+        if (isNaN(securityScore)) {
+
+            securityScore = 0;
+
+        }
+
+        if (scoreInner) {
+
+            scoreInner.textContent =
+                Math.round(securityScore);
+
+        }
+
+        if (scoreCircle) {
+
+            if (securityScore > 0) {
+
+                scoreCircle.style.background =
+                    "conic-gradient(#2563eb " +
+                    securityScore +
+                    "%, #e5e7eb " +
+                    securityScore +
+                    "%)";
+
+            } else {
+
+                scoreCircle.style.background =
+                    "conic-gradient(#2563eb 8%, #e5e7eb 8%)";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

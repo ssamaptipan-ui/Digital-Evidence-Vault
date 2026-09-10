@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Evidence Details - Digital Evidence Vault</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+        }
+
+        .logo h2 {
+            font-size: 20px;
+        }
+
+        .logo p {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 7px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            background: #1e293b;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .top-bar h1 {
+            font-size: 28px;
+        }
+
+        .top-bar p {
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: white;
+            color: #334155;
+            border: 1px solid #e2e8f0;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #f8fafc;
+        }
+
+        .status-banner {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 25px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-info h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+
+        .status-info p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .verified {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .failed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 22px;
+        }
+
+        .detail-row {
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .hash-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .hash-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .algorithm {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 5px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .timeline {
+            margin-top: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 35px;
+            padding-bottom: 28px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 22px;
+            width: 2px;
+            height: calc(100% - 5px);
+            background: #cbd5e1;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 17px;
+            height: 17px;
+            background: #2563eb;
+            border-radius: 50%;
+            border: 3px solid #dbeafe;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .timeline-action {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .timeline-user {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .security-note {
+            margin-top: 25px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .security-note h3 {
+            color: #1d4ed8;
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .security-note p {
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                padding: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .status-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">🔐</div>
+
+            <div>
+                <h2>Evidence Vault</h2>
+                <p>Digital Evidence Management</p>
+            </div>
+
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            📊 Dashboard
+        </a>
+
+        <a href="{{ url_for('upload_evidence') }}" class="nav-link">
+            📤 Upload Evidence
+        </a>
+
+        <a href="{{ url_for('evidence') }}" class="nav-link active">
+            📁 Evidence
+        </a>
+        <a href="{{ url_for('evidence') }}" class="nav-link">
+            🔍 Verify Evidence
+        </a>
+
+        <a href="{{ url_for('logs') }}" class="nav-link">
+            📋 Audit Logs
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            🚪 Logout
+        </a>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="top-bar">
+
+            <div>
+                <h1>Evidence Details</h1>
+                <p>Detailed forensic information and chain of custody</p>
+            </div>
+
+            <a href="{{ url_for('evidence') }}" class="back-btn">
+                ← Back to Evidence
+            </a>
+
+        </div>
+
+
+        <div class="status-banner">
+
+            <div class="status-info">
+
+                <h3>Evidence Integrity Status</h3>
+
+                <p>
+                    Cryptographic verification status of this evidence
+                </p>
+
+            </div>
+
+            {% if status == "Verified" %}
+
+                <span class="status verified">
+                    ✓ VERIFIED
+                </span>
+
+            {% elif status == "Verification Failed" %}
+
+                <span class="status failed">
+                    ✕ VERIFICATION FAILED
+                </span>
+
+            {% else %}
+
+                <span class="status pending">
+                    ⏳ PENDING VERIFICATION
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <!-- Evidence Information -->
+
+            <div class="card">
+
+                <h2>📄 Evidence Information</h2>
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Evidence ID
+                    </span>
+
+                    <span class="detail-value">
+                        #{{ evidence.id }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Original File Name
+                    </span>
+
+                    <span class="detail-value">
+                        {{ evidence.filename }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Encrypted Storage File
+                    </span>
+
+                    <span class="detail-value">
+                        {{ evidence.stored_filename }}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Uploaded Date & Time
+                    </span>
+
+                    <span class="detail-value">
+                        {% if evidence.uploaded_at %}
+                        {{ evidence.uploaded_at.strftime('%d-%m-%Y %I:%M:%S %p') }}
+                        {% else %}
+                            <span style="color: #9ca3af;">Not Available</span>
+                        {% endif %}
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="detail-label">
+                        Storage Status
+                    </span>
+
+                    <span class="detail-value">
+                        🔒 Encrypted
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SHA-256 -->
+
+            <div class="card">
+
+                <div class="hash-title">
+
+                    <h2>🔐 SHA-256 Integrity Hash</h2>
+
+                    <span class="algorithm">
+                        SHA-256
+                    </span>
+
+                </div>
+
+                <p style="color:#64748b; font-size:13px; margin-bottom:15px; line-height:1.6;">
+
+                    This cryptographic hash uniquely represents the
+                    original evidence file. Any modification to the
+                    file will produce a different hash.
+
+                </p>
+
+                <div class="hash-box">
+                    {{ evidence.file_hash }}
+                </div>
+
+                <div class="security-note">
+
+                    <h3>🛡 Integrity Protection</h3>
+
+                    <p>
+                        The evidence is encrypted before storage and
+                        its SHA-256 hash is retained for integrity
+                        verification.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Chain of Custody -->
+
+            <div class="card full-width">
+
+                <h2>🔗 Chain of Custody</h2>
+
+                <p style="color:#64748b; font-size:13px; margin-bottom:25px;">
+
+                    Chronological record of important actions performed
+                    on this evidence.
+
+                </p>
+
+
+                <div class="timeline">
+
+                    {% if custody_logs %}
+
+                        {% for log in custody_logs %}
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-dot"></div>
+
+                                <div class="timeline-content">
+
+                                    <div class="timeline-action">
+                                        {{ log.action }}
+                                    </div>
+
+                                    <div class="timeline-user">
+                                        👤 Performed by:
+                                        <strong>{{ log.username }}</strong>
+                                    </div>
+
+                                    <div class="timeline-time">
+                                        {% if log.timestamp %}
+                                        🕒 {{ log.timestamp.strftime('%d-%m-%Y %I:%M:%S %p') }}
+                                        {% else %}
+                                           🕒 <span style="color: #9ca3af;">Not Available</span>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div style="
+                            padding:20px;
+                            background:#f8fafc;
+                            border-radius:8px;
+                            color:#64748b;
+                            text-align:center;
+                        ">
+
+                            No custody events found.
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+</body>
+
+</html>

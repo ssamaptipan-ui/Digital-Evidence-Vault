@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Audit Logs - Digital Evidence Vault</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        /* ==========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            padding: 25px 18px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+            margin-bottom: 6px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #d1d5db;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu .active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 25px;
+        }
+
+        .logout a {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .logout a:hover {
+            background: #b91c1c;
+        }
+
+
+        /* ==========================
+           MAIN
+        ========================== */
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .dashboard-btn {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .dashboard-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* ==========================
+           LOG INFO
+        ========================== */
+
+        .info {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .info h2 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .info p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* ==========================
+           TABLE
+        ========================== */
+
+        .table-container {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 14px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* ==========================
+           LOG ID
+        ========================== */
+
+        .log-id {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+
+        /* ==========================
+           USER
+        ========================== */
+
+        .username {
+            font-weight: bold;
+            color: #111827;
+        }
+
+
+        /* ==========================
+           ACTION BADGES
+        ========================== */
+
+        .action {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .login {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .upload {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .verify {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .download {
+            background: #cffafe;
+            color: #155e75;
+        }
+
+        .logout-action {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .registered {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .default-action {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+
+        /* ==========================
+           EMPTY
+        ========================== */
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6b7280;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+
+        /* ==========================
+           FOOTER
+        ========================== */
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+
+        /* ==========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: relative;
+                left: 0;
+                right: 0;
+                bottom: auto;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================
+         SIDEBAR
+    ========================== -->
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>🔐 Evidence Vault</h2>
+
+            <p>Digital Evidence Management</p>
+
+        </div>
+
+
+        <div class="menu">
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('upload_evidence') }}">
+                📤 Upload Evidence
+            </a>
+
+            <a href="{{ url_for('evidence') }}">
+                📁 Evidence
+            </a>
+
+            <a href="{{ url_for('evidence') }}">
+                ✅ Verify Evidence
+            </a>
+
+            <a href="{{ url_for('logs') }}" class="active">
+                📋 Audit Logs
+            </a>
+
+        </div>
+
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ==========================
+         MAIN CONTENT
+    ========================== -->
+
+    <div class="main">
+
+
+        <!-- HEADER -->
+
+        <div class="header">
+
+            <div>
+
+                <h1>Audit Logs</h1>
+
+                <p>
+                    Monitor and track all evidence vault activities
+                </p>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="dashboard-btn"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+
+
+        <!-- INFO -->
+
+        <div class="info">
+
+            <h2>📋 Activity Audit Trail</h2>
+
+            <p>
+
+                This audit trail records important activities performed
+                within the Digital Evidence Vault, including user login,
+                evidence upload, verification, download and logout events.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- LOG TABLE -->
+
+        <div class="table-container">
+
+
+            {% if logs %}
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Log ID</th>
+
+                        <th>User</th>
+
+                        <th>Action</th>
+
+                        <th>Date & Time</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for log in logs %}
+
+
+                    <tr>
+
+
+                        <td>
+
+                            <span class="log-id">
+                                #{{ log.id }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="username">
+                                👤 {{ log.username }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+
+                            {% if "Logged In" in log.action %}
+
+                                <span class="action login">
+                                    🔑 {{ log.action }}
+                                </span>
+
+                            {% elif "Uploaded" in log.action %}
+
+                                <span class="action upload">
+                                    📤 {{ log.action }}
+                                </span>
+
+                            {% elif "Verified Successfully" in log.action
+                                  or "Verified:" in log.action
+                                  or "Evidence Verified" in log.action %}
+
+                                <span class="action verify">
+                                    ✓ {{ log.action }}
+                                </span>
+
+                            {% elif "Verification Failed" in log.action %}
+
+                                <span class="action logout-action">
+                                    ⚠ {{ log.action }}
+                                </span>
+
+                            {% elif "Downloaded" in log.action %}
+
+                                <span class="action download">
+                                    ⬇ {{ log.action }}
+                                </span>
+
+                            {% elif "Logged Out" in log.action %}
+
+                                <span class="action logout-action">
+                                    🚪 {{ log.action }}
+                                </span>
+
+                            {% elif "Registered" in log.action %}
+
+                                <span class="action registered">
+                                    👤 {{ log.action }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="action default-action">
+                                    📌 {{ log.action }}
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <td>
+
+                            {% if log.timestamp %}
+
+                                {{ log.timestamp.strftime('%d-%m-%Y %I:%M:%S %p') }}
+
+                            {% else %}
+
+                                <span style="color: #9ca3af;">
+                                    Not Available
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+
+            {% else %}
+
+
+            <div class="empty">
+
+                <h2>📋 No Audit Logs</h2>
+
+                <p>
+                    No activity has been recorded yet.
+                </p>
+
+            </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            Digital Evidence Vault
+            © 2026 |
+            Secure Evidence Management System
+
+        </footer>
+
+
+    </div>
+
+
+</body>
+
+</html>

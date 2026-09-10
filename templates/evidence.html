@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Evidence - Digital Evidence Vault</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #111827;
+            padding: 25px 18px;
+            color: white;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo h2 {
+            font-size: 21px;
+            margin-bottom: 6px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #d1d5db;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu .active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .logout {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 25px;
+        }
+
+        .logout a {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .logout a:hover {
+            background: #b91c1c;
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        .back-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .table-container {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 14px;
+            text-align: left;
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .hash {
+            max-width: 260px;
+            word-break: break-all;
+            font-family: Consolas, monospace;
+            font-size: 11px;
+            color: #374151;
+            background: #f3f4f6;
+            padding: 7px;
+            border-radius: 5px;
+        }
+
+        .filename {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 7px 11px;
+            border-radius: 6px;
+            color: white;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        .verify {
+            background: #2563eb;
+        }
+
+        .verify:hover {
+            background: #1d4ed8;
+        }
+
+        .download {
+            background: #059669;
+        }
+
+        .download:hover {
+            background: #047857;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6b7280;
+        }
+
+        .empty h2 {
+            margin-bottom: 10px;
+            color: #374151;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 11px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 35px;
+            padding: 20px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .logout {
+                position: relative;
+                left: 0;
+                right: 0;
+                bottom: auto;
+                margin-top: 20px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>🔐 Evidence Vault</h2>
+
+            <p>Digital Evidence Management</p>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 Dashboard
+            </a>
+
+            <a href="{{ url_for('upload_evidence') }}">
+                📤 Upload Evidence
+            </a>
+
+            <a href="{{ url_for('evidence') }}" class="active">
+                📁 Evidence
+            </a>
+
+            <a href="{{ url_for('evidence') }}">
+                ✅ Verify Evidence
+            </a>
+
+            <a href="{{ url_for('logs') }}">
+                📋 Audit Logs
+            </a>
+
+        </div>
+
+        <div class="logout">
+
+            <a href="{{ url_for('logout') }}">
+                🚪 Logout
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="main">
+
+        <div class="header">
+
+            <div>
+
+                <h1>Evidence Management</h1>
+
+                <p>
+                    View and manage securely stored digital evidence
+                </p>
+
+            </div>
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="back-btn"
+            >
+                ← Dashboard
+            </a>
+
+        </div>
+
+        <div class="table-container">
+
+            {% if evidence_list %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>File Name</th>
+
+                        <th>SHA-256 Hash</th>
+
+                        <th>Uploaded Date</th>
+
+                        <th>Status</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for evidence in evidence_list %}
+
+                    <tr>
+
+                        <td>
+                            #{{ evidence.id }}
+                        </td>
+
+                        <td>
+
+                            <div class="filename">
+                                📄 {{ evidence.filename }}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <div class="hash">
+                                {{ evidence.file_hash }}
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            {% if evidence.upload_time %}
+
+                                {{ evidence.upload_time.strftime('%d-%m-%Y %I:%M:%S %p') }}
+
+                            {% else %}
+
+                                <span style="color: #9ca3af;">
+                                    Not Available
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {% if evidence.verified %}
+
+                                <span style="color: #059669; font-weight: bold;">
+                                    ✓ Verified
+                                </span>
+
+                            {% else %}
+
+                                <span style="color: #d97706; font-weight: bold;">
+                                    ⏳ Pending
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <div class="buttons">
+
+                                <a
+                                    href="{{ url_for('verify_evidence', evidence_id=evidence.id) }}"
+                                    class="btn verify"
+                                >
+                                    ✓ Verify
+                                </a>
+
+                                <a
+                                    href="{{ url_for('download_evidence', evidence_id=evidence.id) }}"
+                                    class="btn download"
+                                >
+                                    ⬇ Download
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+
+                <h2>📁 No Evidence Found</h2>
+
+                <p>
+                    You have not uploaded any evidence files yet.
+                </p>
+
+                <a
+                    href="{{ url_for('upload_evidence') }}"
+                    class="upload-btn"
+                >
+                    📤 Upload Evidence
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <footer>
+
+            Digital Evidence Vault
+            © 2026 |
+            Secure Evidence Management System
+
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
